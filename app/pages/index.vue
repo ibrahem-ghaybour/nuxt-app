@@ -9,10 +9,11 @@
             <span class="text-xl font-bold">LuxeStore</span>
           </div>
           <div class="hidden md:flex items-center space-x-8">
-            <a href="#" class="text-sm font-medium hover:text-primary transition-colors">Products</a>
-            <a href="#" class="text-sm font-medium hover:text-primary transition-colors">Features</a>
-            <a href="#" class="text-sm font-medium hover:text-primary transition-colors">About</a>
-            <a href="#" class="text-sm font-medium hover:text-primary transition-colors">Contact</a>
+            <a href="/categories" class="text-sm font-medium hover:text-primary transition-colors">Categories</a>
+            <a href="/product" class="text-sm font-medium hover:text-primary transition-colors">Products</a>
+            <a href="/lessons" class="text-sm font-medium hover:text-primary transition-colors">Lessons</a>
+            <a href="/portfolio" class="text-sm font-medium hover:text-primary transition-colors">Portfolio</a>
+            <a href="/profile" class="text-sm font-medium hover:text-primary transition-colors">Profile</a>
           </div>
           <div class="flex items-center space-x-4">
             <Button variant="ghost" size="sm">Sign In</Button>
