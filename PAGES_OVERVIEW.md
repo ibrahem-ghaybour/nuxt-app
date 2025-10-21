@@ -59,6 +59,38 @@
 - **Animations**: Sequential hero animations, scroll triggers, stagger effects
 - **Professional**: Clean design, gradient accents
 
+### 7. **Login Page** (`/auth/login`)
+- **Features**:
+  - Email & password authentication
+  - Password visibility toggle
+  - Remember me option
+  - Social login (Google, GitHub)
+  - Forgot password link
+  - Link to registration page
+- **Animations**: Card entrance, fade-in effects
+- **Security**: Password masking, form validation
+
+### 8. **Register Page** (`/auth/register`)
+- **Features**:
+  - Full name, email, password fields
+  - Password strength indicator (4 levels)
+  - Password confirmation
+  - Terms & conditions checkbox
+  - Social registration (Google, GitHub)
+  - Link to login page
+- **Animations**: Sequential form animations, strength bar transitions
+- **Validation**: Real-time password strength, matching passwords
+
+### 9. **Forgot Password Page** (`/auth/forgot-password`)
+- **Features**:
+  - Email input for reset
+  - Success confirmation screen
+  - Resend email with cooldown timer (60s)
+  - Instructions for troubleshooting
+  - Back to login link
+- **Animations**: Card transitions, success state animation
+- **UX**: Clear feedback, helpful instructions
+
 ## 🎭 GSAP Animations Used
 
 - **Timeline Animations**: Sequential entrance effects
@@ -86,7 +118,11 @@ Home (/)
 ├── Product (/product)
 ├── Lessons (/lessons)
 ├── Portfolio (/portfolio)
-└── Profile (/profile)
+├── Profile (/profile)
+└── Authentication (/auth)
+    ├── Login (/auth/login)
+    ├── Register (/auth/register)
+    └── Forgot Password (/auth/forgot-password)
 ```
 
 ## 📱 Responsive Design
@@ -115,3 +151,6 @@ All pages are fully responsive with:
 - Profile: http://localhost:3001/profile
 - Lessons: http://localhost:3001/lessons
 - Portfolio: http://localhost:3001/portfolio
+- Login: http://localhost:3001/auth/login
+- Register: http://localhost:3001/auth/register
+- Forgot Password: http://localhost:3001/auth/forgot-password
