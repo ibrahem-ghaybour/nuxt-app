@@ -1,29 +1,5 @@
 <template>
   <div class="min-h-screen bg-background">
-    <!-- Navigation -->
-    <nav ref="navRef" class="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b">
-      <div class="container mx-auto px-4 py-4">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-2">
-            <div class="w-8 h-8 bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg"></div>
-            <span class="text-xl font-bold">LuxeStore</span>
-          </div>
-          <div class="hidden md:flex items-center space-x-8">
-            <a href="/categories" class="text-sm font-medium hover:text-primary transition-colors">Categories</a>
-            <a href="/product" class="text-sm font-medium hover:text-primary transition-colors">Products</a>
-            <a href="/lessons" class="text-sm font-medium hover:text-primary transition-colors">Lessons</a>
-            <a href="/portfolio" class="text-sm font-medium hover:text-primary transition-colors">Portfolio</a>
-            <a href="/profile" class="text-sm font-medium hover:text-primary transition-colors">Profile</a>
-          </div>
-          <div class="flex items-center space-x-4">
-            <Button variant="ghost" size="sm">Sign In</Button>
-            <Button size="sm">Get Started</Button>
-          </div>
-        </div>
-      </div>
-    </nav>
-
-    <!-- Hero Section -->
     <section class="pt-32 pb-20 px-4 overflow-hidden">
       <div class="container mx-auto">
         <div class="grid lg:grid-cols-2 gap-12 items-center">
@@ -168,50 +144,7 @@
         </Card>
       </div>
     </section>
-
-    <!-- Footer -->
-    <footer ref="footerRef" class="py-12 px-4 border-t">
-      <div class="container mx-auto">
-        <div class="grid md:grid-cols-4 gap-8 mb-8">
-          <div>
-            <div class="flex items-center space-x-2 mb-4">
-              <div class="w-8 h-8 bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg"></div>
-              <span class="text-xl font-bold">LuxeStore</span>
-            </div>
-            <p class="text-sm text-muted-foreground">
-              Premium fashion for the modern individual.
-            </p>
-          </div>
-          <div>
-            <h4 class="font-semibold mb-4">Shop</h4>
-            <ul class="space-y-2 text-sm text-muted-foreground">
-              <li><a href="#" class="hover:text-foreground transition-colors">New Arrivals</a></li>
-              <li><a href="#" class="hover:text-foreground transition-colors">Best Sellers</a></li>
-              <li><a href="#" class="hover:text-foreground transition-colors">Sale</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="font-semibold mb-4">Company</h4>
-            <ul class="space-y-2 text-sm text-muted-foreground">
-              <li><a href="#" class="hover:text-foreground transition-colors">About Us</a></li>
-              <li><a href="#" class="hover:text-foreground transition-colors">Careers</a></li>
-              <li><a href="#" class="hover:text-foreground transition-colors">Contact</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="font-semibold mb-4">Support</h4>
-            <ul class="space-y-2 text-sm text-muted-foreground">
-              <li><a href="#" class="hover:text-foreground transition-colors">FAQ</a></li>
-              <li><a href="#" class="hover:text-foreground transition-colors">Shipping</a></li>
-              <li><a href="#" class="hover:text-foreground transition-colors">Returns</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="pt-8 border-t text-center text-sm text-muted-foreground">
-          <p>&copy; 2025 LuxeStore. All rights reserved.</p>
-        </div>
-      </div>
-    </footer>
+   
   </div>
 </template>
 
@@ -235,7 +168,6 @@ if (process.client) {
 }
 
 // Refs for animations
-const navRef = ref(null)
 const badgeRef = ref(null)
 const titleRef = ref(null)
 const descRef = ref(null)
@@ -249,7 +181,6 @@ const featuresTitleRef = ref(null)
 const featuresDescRef = ref(null)
 const featureRefs = ref<any[]>([])
 const newsletterRef = ref(null)
-const footerRef = ref(null)
 
 // Data
 const products = [
@@ -270,14 +201,6 @@ const features = [
 
 onMounted(() => {
   if (!process.client) return
-
-  // Navigation animation
-  gsap.from(navRef.value, {
-    y: -100,
-    opacity: 0,
-    duration: 1,
-    ease: 'power3.out',
-  })
 
   // Hero section animations
   const heroTimeline = gsap.timeline({ defaults: { ease: 'power3.out' } })
@@ -409,16 +332,5 @@ onMounted(() => {
     })
   }
 
-  // Footer animation
-  gsap.from(footerRef.value, {
-    scrollTrigger: {
-      trigger: footerRef.value,
-      start: 'top 90%',
-    },
-    y: 50,
-    opacity: 0,
-    duration: 1,
-    ease: 'power3.out',
-  })
 })
 </script>
