@@ -25,22 +25,30 @@
       <div class="container mx-auto">
         <h2 ref="categoriesTitleRef" class="text-3xl font-bold mb-8">Browse Categories</h2>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-16">
-          <div 
-            v-for="(category, index) in categories" 
-            :key="index"
-            :ref="el => categoryRefs[index] = el"
-            @click="selectedCategory = category.name"
-            :class="cn(
-              'p-6 rounded-2xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg',
-              selectedCategory === category.name 
-                ? 'border-primary bg-primary/5' 
-                : 'border-border hover:border-primary/50'
-            )"
-          >
-            <div class="text-4xl mb-3 text-center">{{ category.icon }}</div>
-            <h3 class="text-sm font-semibold text-center">{{ category.name }}</h3>
-            <p class="text-xs text-muted-foreground text-center mt-1">{{ category.count }} items</p>
+          <div v-if="categoriesLoading" class="col-span-full text-center py-8">
+            <p>Loading categories...</p>
           </div>
+          <div v-else-if="categoriesError" class="col-span-full text-center py-8 text-red-500">
+            <p>Error loading categories. Please try again later.</p>
+          </div>
+          <template v-else>
+            <div 
+              v-for="(category, index) in categoriesWithIcons" 
+              :key="category._id"
+              :ref="el => { if (el) categoryRefs[index] = el }"
+              @click="selectedCategory = category.name"
+              :class="cn(
+                'p-6 rounded-2xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg',
+                selectedCategory === category.name 
+                  ? 'border-primary bg-primary/5' 
+                  : 'border-border hover:border-primary/50'
+              )"
+            >
+              <div class="text-4xl mb-3 text-center">{{ category.icon }}</div>
+              <h3 class="text-sm font-semibold text-center">{{ category.name }}</h3>
+              <p class="text-xs text-muted-foreground text-center mt-1">{{ category.count }} items</p>
+            </div>
+          </template>
         </div>
 
         <!-- Filters & Products -->
@@ -108,7 +116,7 @@
           <!-- Products Grid -->
           <div class="lg:col-span-3">
             <div class="flex items-center justify-between mb-6">
-              <p class="text-sm text-muted-foreground">Showing {{ products.length }} products</p>
+              <p class="text-sm text-muted-foreground">Showing {{ filteredProducts.length }} products</p>
               <select class="text-sm border rounded-md px-3 py-2">
                 <option>Sort by: Featured</option>
                 <option>Price: Low to High</option>
@@ -177,7 +185,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { cn } from '@/lib/utils'
@@ -190,10 +198,14 @@ import CardContent from '~/components/ui/card/CardContent.vue'
 import CardFooter from '~/components/ui/card/CardFooter.vue'
 import Badge from '~/components/ui/badge/Badge.vue'
 import Input from '~/components/ui/input/Input.vue'
+import { useCategories } from '~/composables/useCategories'
 
-if (process.client) {
-  gsap.registerPlugin(ScrollTrigger)
-}
+// Register GSAP ScrollTrigger plugin on client side
+onMounted(() => {
+  if (typeof window !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger)
+  }
+})
 
 const heroRef = ref(null)
 const heroTitleRef = ref(null)
@@ -206,16 +218,104 @@ const productRefs = ref<any[]>([])
 const paginationRef = ref(null)
 const selectedCategory = ref('All')
 
-const categories = [
-  { name: 'Fashion', icon: '👔', count: 124 },
-  { name: 'Electronics', icon: '📱', count: 89 },
-  { name: 'Home', icon: '🏠', count: 156 },
-  { name: 'Beauty', icon: '💄', count: 78 },
-  { name: 'Sports', icon: '⚽', count: 92 },
-  { name: 'Books', icon: '📚', count: 234 },
-]
+// Filter products based on selected category
+const filteredProducts = computed(() => {
+  if (selectedCategory.value === 'All') return products.value
+  return products.value.filter(product => 
+    product.category.toLowerCase() === selectedCategory.value.toLowerCase()
+  )
+})
 
-const products = [
+// Get categories from API
+const { getCategories } = useCategories()
+const categoriesPage = ref(1)
+const categoriesPerPage = 10
+
+// Initialize reactive variables
+const categories = ref<any[]>([])
+const categoriesLoading = ref(true)
+const categoriesError = ref<any>(null)
+const pagination = ref<any>(null)
+const totalCategories = ref(0)
+
+// Fetch categories when component mounts
+onMounted(async () => {
+  try {
+    const result = await getCategories(categoriesPage.value, categoriesPerPage)
+    categories.value = result.data.value || []
+    pagination.value = result.pagination.value
+    totalCategories.value = result.count.value
+  } catch (error) {
+    categoriesError.value = error
+  } finally {
+    categoriesLoading.value = false
+  }
+})
+
+// Map categories to include icons (you can customize this based on your needs)
+const categoriesWithIcons = computed(() => {
+  const iconMap: Record<string, string> = {
+    // Main categories
+    'fashion': '👔',
+    'clothing': '👕',
+    'electronics': '📱',
+    'home': '🏠',
+    'beauty': '💄',
+    'sports': '⚽',
+    'books': '📚',
+    'shoes': '👟',
+    'accessories': '🕶️',
+    'food': '🍎',
+    'drinks': '🥤',
+    'furniture': '🛋️',
+    'garden': '🌳',
+    'toys': '🧸',
+    'gaming': '🎮',
+    'movies': '🎬',
+    'music': '🎵',
+    'art': '🎨',
+    'pets': '🐶',
+    'baby': '👶',
+    'health': '💊',
+    'jewelry': '💍',
+    'watches': '⌚',
+    'bags': '👜',
+    'womens': '👚',
+    'mens': '👔',
+    'kids': '👦',
+    'home-decor': '🏡',
+    'kitchen': '🔪',
+    'bath': '🛁',
+    'bedding': '🛏️',
+    'lighting': '💡',
+    'outdoor': '🌲',
+    'tools': '🔧',
+    'automotive': '🚗',
+    'industrial': '🏭',
+    'software': '💻',
+    'games': '🎲',
+    'tv': '📺',
+    'camera': '📷',
+    'phones': '📞',
+    'tablets': '📱',
+    'laptops': '💻',
+    'desktops': '🖥️',
+    'monitors': '🖥️',
+    'printers': '🖨️',
+    'networking': '📡',
+    'storage': '💾',
+    'computer-accessories': '⌨️',
+  }
+
+  return categories.value.map(category => ({
+    ...category,
+    icon: iconMap[category.name.toLowerCase()] || '📦',
+    count: Math.floor(Math.random() * 100) + 10 // Random count for demo
+  }))
+})
+
+// Sample products - replace with your actual products data
+const products = ref([
   { name: 'Premium Leather Jacket', category: 'Fashion', price: 299, oldPrice: 399, rating: 4.8, emoji: '🧥', badge: 'Sale' },
   { name: 'Wireless Headphones', category: 'Electronics', price: 199, rating: 4.9, emoji: '🎧', badge: 'New' },
   { name: 'Smart Watch Pro', category: 'Electronics', price: 449, rating: 4.7, emoji: '⌚', badge: 'Hot' },
@@ -225,10 +325,10 @@ const products = [
   { name: 'Skincare Set', category: 'Beauty', price: 79, rating: 4.9, emoji: '🧴', badge: 'New' },
   { name: 'Yoga Mat', category: 'Sports', price: 45, rating: 4.7, emoji: '🧘' },
   { name: 'Table Lamp', category: 'Home', price: 65, rating: 4.6, emoji: '💡' },
-]
+])
 
-onMounted(() => {
-  if (!process.client) return
+onMounted(async () => {
+  if (typeof window === 'undefined') return
 
   // Hero animations
   const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } })
