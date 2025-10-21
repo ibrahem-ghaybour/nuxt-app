@@ -8,10 +8,10 @@
             <span class="text-xl font-bold">LuxeStore</span>
           </div>
           <div class="hidden md:flex items-center space-x-8">
+            <nuxt-link to="/" class="text-sm font-medium hover:text-primary transition-colors">Home</nuxt-link>
             <nuxt-link to="/categories" class="text-sm font-medium hover:text-primary transition-colors">Categories</nuxt-link>
             <nuxt-link to="/product" class="text-sm font-medium hover:text-primary transition-colors">Products</nuxt-link>
             <nuxt-link to="/lessons" class="text-sm font-medium hover:text-primary transition-colors">Lessons</nuxt-link>
-            <nuxt-link to="/portfolio" class="text-sm font-medium hover:text-primary transition-colors">Portfolio</nuxt-link>
             <nuxt-link to="/profile" class="text-sm font-medium hover:text-primary transition-colors">Profile</nuxt-link>
           </div>
           <div class="flex items-center space-x-4">
