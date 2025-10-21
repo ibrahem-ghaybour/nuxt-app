@@ -15,8 +15,8 @@
             <nuxt-link to="/profile" class="text-sm font-medium hover:text-primary transition-colors">Profile</nuxt-link>
           </div>
           <div class="flex items-center space-x-4">
-            <nuxt-link to="/auth/login" class="text-sm font-medium hover:text-primary transition-colors">Sign In</nuxt-link>
-            <nuxt-link to="/auth/register" class="text-sm font-medium hover:text-primary transition-colors">Get Started</nuxt-link>
+           <Button><nuxt-link to="/auth/login" class="text-sm font-medium hover:text-primary transition-colors">Sign In</nuxt-link></Button>
+            <Button><nuxt-link to="/auth/register" class="text-sm font-medium hover:text-primary transition-colors">Get Started</nuxt-link></Button>
           </div>
         </div>
       </div>
